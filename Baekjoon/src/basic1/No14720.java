@@ -5,38 +5,30 @@ import java.util.Scanner;
 public class No14720 {
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
-		int n, max;
+		int n;
 		int[] milk;
+		int[][] result;
 		
-		max = 0;
-		
-		while(true) {
-			n = scan.nextInt();
-			if(n >= 1 && n <= 1000) {
-				break;
-			}
-		}
+		// 입력
+		n = scan.nextInt();
 		milk = new int[n];
-		
+		result = new int[n][3];
 		for(int i = 0; i < milk.length; i++) {
-			if(i == 0) {
-				milk[i] = 0;
-			}
-			else {
-				if(milk[i - 1] == 0) {
-					milk[i] = 1;
-				}
-				else if(milk[i - 1] == 1) {
-					milk[i] = 2;
-				}
-				else if(milk[i - 1] == 2) {
-					milk[i] = 0;
-				}
-			}
-			max++;
+			milk[i] = scan.nextInt();
 		}
 		
-		System.out.println(max);
+		// 알고리즘
+		if(milk[0] == 0) {
+			result[0][0] = 1;
+		}
+		for(int i = 1; i < n; i++) {
+			result[i][0] = milk[i] == 0 ? result[i - 1][2] + 1 : result[i - 1][0];
+			result[i][1] = milk[i] == 1 && result[i][2] < result[i][0] ? result[i - 1][0] + 1 : result[i - 1][1];
+			result[i][2] = milk[i] == 2 && result[i][0] < result[i][1] ? result[i - 1][1] + 1 : result[i - 1][2];
+		}
+		
+		// 출력
+		System.out.println(Math.max(result[n - 1][0], Math.max(result[n - 1][1], result[n - 1][2])));
 		
 		scan.close();
 	}
