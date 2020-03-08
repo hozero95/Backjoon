@@ -18,11 +18,11 @@ public class No2579 {
 
 		// 알고리즘
 		dp[1] = stairs[1];
-		dp[2] = stairs[1] + stairs[2];
+		if(num >= 2) {
+			dp[2] = dp[1] + stairs[2];	
+		}
 		for (int i = 3; i <= num; i++) {
-			int one = stairs[i] + stairs[i - 1] + dp[i - 3];
-			int two = stairs[i] + dp[i - 2];
-			dp[i] = Math.max(one, two);
+			dp[i] = Math.max(dp[i - 2] + stairs[i], dp[i - 3] + stairs[i - 1] + stairs[i]);
 		}
 
 		// 출력
